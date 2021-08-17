@@ -1,0 +1,23 @@
+{
+  "name": "pokemon-crud",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "devjs": "npx nodemon src/index.js",
+    "devts": "npx ts-node-dev --respawn --transpile-only src/index.ts"
+  },
+  "author": "Edilson Peres",
+  "license": "ISC",
+  "dependencies": {
+    "apollo-server": "^3.1.2",
+    "csv-parser": "^3.0.0",
+    "dotenv": "^10.0.0",
+    "graphql": "^15.5.1",
+    "mongoose": "^5.13.6"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.12",
+    "ts-node-dev": "^1.1.8"
+  }
+}
