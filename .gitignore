@@ -23,5 +23,6 @@ Thumbs.db
 # Directories and files #
 #########################
 node_modules/
+dist/
 credentials.txt
 .env

@@ -1,8 +1,13 @@
-const { ApolloServer, gql } = require('apollo-server')
-const PokemonModel = require('../models/pokemon')
-const mongoose = require('mongoose')
-const createNewPokemon = require('../functions/createNewPokemon')
-require('dotenv').config({})
+import { ApolloServer, gql } from 'apollo-server'
+import { PokemonModel, IPokemon, IPokemonDoc } from '../models/pokemon'
+import mongoose from 'mongoose'
+import { createNewPokemon } from '../functions/createNewPokemon'
+import dotenv from 'dotenv'
+dotenv.config({})
+
+if (!process.env.MONGO_URI) {
+  throw new Error('Erro ao carregar variavel de ambiente.')
+}
 
 const typeDefs = gql`
   type Pokemon {
@@ -100,25 +105,27 @@ const typeDefs = gql`
 
   type Mutation {
     createPokemon(data: PokemonInput!): Pokemon!
-    # updatePokemon(name: String!, data: PokemonInput): Pokemon!
     deletePokemon(name: String!): Boolean!
   }
 `
 
 const resolvers = {
   Query: {
-    findPokemons: async (_, { name, qty }) => {
+    findPokemons: async (
+      _: any,
+      { name, qty }: { name: string; qty: number }
+    ) => {
       if (name) {
         if (qty) {
           return await PokemonModel.find({
-            name_lc: { $regex: '.*' + name.toLowerCase() + '.*' }
+            name: { $regex: new RegExp(name, 'i') }
           })
             .limit(qty)
             .sort({ name: 1 })
             .exec()
         } else {
           return await PokemonModel.find({
-            name_lc: { $regex: '.*' + name.toLowerCase() + '.*' }
+            name: { $regex: new RegExp(name, 'i') }
           })
             .sort({ name: 1 })
             .exec()
@@ -133,19 +140,18 @@ const resolvers = {
     }
   },
   Mutation: {
-    createPokemon: async (_, { data }) =>
-      await createNewPokemon(data, (err, msg, newPokemon) => {
-        if (err) {
-          throw err
-        } else {
-          console.log(msg)
-          return newPokemon
-        }
-      }),
-    // updatePokemon: (_, {name, data}) => ,
-    deletePokemon: async (_, { name }) => {
+    createPokemon: async (_: any, { data }: { data: IPokemon }) => {
+      try {
+        const newPokemon: IPokemonDoc = await createNewPokemon(data)
+        console.log('Pokemon saved to the database.')
+        return newPokemon
+      } catch (err) {
+        throw err
+      }
+    },
+    deletePokemon: async (_: any, { name }: { name: string }) => {
       const deleted = await PokemonModel.findOneAndDelete({ name: name }).exec()
-      console.log(deleted)
+      console.log('DELETED\n', deleted)
       return !!deleted
     }
   }
