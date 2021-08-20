@@ -36,7 +36,7 @@ class PokemonsResolvers {
   }
 
   @Mutation(returns => PokemonReturn)
-  async createPokemon(@Arg('data') data: PokemonInput): Promise<PokemonReturn> {
+  async createPokemon(@Arg('data') data: PokemonInput) {
     try {
       const newPokemon: IPokemonDoc = await createNewPokemon(data)
       console.log('Pokemon saved to the database.')
