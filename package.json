@@ -4,8 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "devjs": "npx nodemon src/index.js",
-    "devts": "npx ts-node-dev --respawn --transpile-only src/index.ts"
+    "dev": "ts-node-dev --respawn --transpile-only src/index.ts"
   },
   "author": "Edilson Peres",
   "license": "ISC",
@@ -17,7 +16,10 @@
     "mongoose": "^5.13.6"
   },
   "devDependencies": {
+    "class-validator": "^0.13.1",
     "nodemon": "^2.0.12",
-    "ts-node-dev": "^1.1.8"
+    "reflect-metadata": "^0.1.13",
+    "ts-node-dev": "^1.1.8",
+    "type-graphql": "^1.1.1"
   }
 }

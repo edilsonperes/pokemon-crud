@@ -1,4 +1,4 @@
-import { PokemonModel, IPokemon, IPokemonDoc } from '../models/pokemon'
+import { PokemonModel, IPokemon, IPokemonDoc } from '../models/PokemonModel'
 
 export async function createNewPokemon(data: IPokemon): Promise<IPokemonDoc> {
   const pokemon = new PokemonModel()

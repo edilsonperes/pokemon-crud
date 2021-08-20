@@ -1,4 +1,4 @@
-import mongoose from 'mongoose'
+import { Schema, Document, model } from 'mongoose'
 
 export interface IPokemon {
   abilities: string[]
@@ -44,9 +44,11 @@ export interface IPokemon {
   is_legendary: boolean
 }
 
-export interface IPokemonDoc extends IPokemon, Document {}
+export interface IPokemonDoc extends IPokemon, Document {
+  _id: string
+}
 
-const pokemonSchema = new mongoose.Schema<IPokemon>({
+const pokemonSchema = new Schema<IPokemon>({
   abilities: [
     {
       type: String,
@@ -95,7 +97,4 @@ const pokemonSchema = new mongoose.Schema<IPokemon>({
   is_legendary: { type: Boolean, required: true }
 })
 
-export const PokemonModel = mongoose.model<IPokemonDoc>(
-  'Pokemon',
-  pokemonSchema
-)
+export const PokemonModel = model<IPokemonDoc>('Pokemon', pokemonSchema)
